@@ -1,7 +1,6 @@
 package sqlanywhere
 
 //#cgo CFLAGS: -Wall -Wno-unused -Werror
-//#cgo LDFLAGS: -l:libdbtasks17_r.so -l:libdblib17_r.so -l:libdbcapi_r.so
 //#include <driver.c>
 import "C"
 import (

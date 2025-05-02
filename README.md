@@ -1,6 +1,6 @@
-# SQLAnywhere Go Driver (Linux, CGO)
+# SQLAnywhere Go Driver (Linux and Windows, CGO)
 
-This repository is an implementation of a Go sql/driver to access [SQLAnywhere](http://dcx.sap.com/index.html#sqla170/en/) databases. It uses SQLAnywhere's C api via cgo. The driver is intended for linux based client applications.
+This repository is an implementation of a Go sql/driver to access [SQLAnywhere](http://dcx.sap.com/index.html#sqla170/en/) databases. It uses SQLAnywhere's C api via cgo. The driver is intended for linux and Windows based client applications.
 
 ## Compiling
 
@@ -9,14 +9,42 @@ This repository is an implementation of a Go sql/driver to access [SQLAnywhere](
 Compilation requirements:
 
 - cgo enabled
-- environment variable CGO_LDFLAGS="-L /path/to/libs"
 - gcc compiler present in path
+- different environment variable set, depending on your OS (see below)
 
-Runtime requirements:
 
-- environment variable LD_LIBRARY_PATH="/path/to/libs"
+### Unix
+```
+export CGO_LDFLAGS="-L/path/to/sqlanydriver/lib64 -l:libdbcapi_r.so"
+export LD_LIBRARY_PATH=/path/to/sqlanydriver/lib64 
+```
 
-/path/to/libs is the full path to the directory containing sqlanywhere linux shared object library files. The file **libdbcapi_r.so** is an example.
+### Windows
+```
+go env -w CGO_LDFLAGS="-LC:\path\to\sqlanydriver\Lib\X64 -l:dbcapi.lib"
+$env:PATH="C:\Program Files\SQL Anywhere XX\Bin64;$env:PATH"
+```
+Somehow compilation fails, if the path in CGO_LDFLAGS contains whitespaces 
+
+
+
+
+
+## Runtime requirements:
+
+- environment variable depending on OS set (see below)
+
+### Unix
+```
+export LD_LIBRARY_PATH=/path/to/sqlanydriver/lib64 
+./your-binary     
+```
+
+### Windows
+```
+$env:PATH="C:\Program Files\SQL Anywhere XX\Bin64;$env:PATH"  
+.\your-binary.exe
+```
 
 The libraries are typically installed as part of the installation of sqlanywhere server. If you don't have an existing sqlanywhere server installation, you can install the time limited free trial [sqlanywhere developer edition](https://www.sap.com/cmp/td/sap-sql-anywhere-developer-edition-free-trial.html). In case the link is unreachable, a [direct download](https://storage.googleapis.com/sqlanywhere-driver/sqla17developerlinux.tar.gz) is available (~320Mb).
 
