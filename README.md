@@ -60,7 +60,7 @@ For example:
 package main
 
 import (
-    _ "github.com/mdcnz/sqlanywhere"
+    _ "github.com/mase-informaticon/lib.go.base.sqlanywhere"
     "database/sql"
     "log"
 )
